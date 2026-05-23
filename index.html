@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>The Fade</title>
@@ -54,7 +53,7 @@ body{background:#0a0a0f;color:#e0e0e0;font-family:'Inter',sans-serif;display:fle
     <div id="hold-text">
       <div class="phase-text" id="pt"></div>
       <div class="phase-sub" id="ps"></div>
-      <svg class="progress-ring" viewBox="0 0 48 48"><circle class="track" cx="24" cy="24" r="20"/><circle id="pr" cx="24" cy="24" r="20" stroke-dasharray="125.7" stroke-dashoffset="0"/></svg>
+      <svg class="progress-ring" viewBox="0 0 48 48"><circle class="track" cx="24" cy="24" r="20"></circle><circle id="pr" cx="24" cy="24" r="20" stroke-dasharray="125.7" stroke-dashoffset="0"></circle></svg>
     </div>
   </div>
   <div id="result">
@@ -78,8 +77,8 @@ const phases=[
   {t:30,e:40,text:'You are still holding.',sub:'we noticed',bg:'#100a10'},
   {t:40,e:55,text:'Okay.',sub:'we see you',bg:'#0a0a0f'},
   {t:55,e:75,text:'This is devotion.',sub:'or stubbornness',bg:'#0a0f12'},
-  {t:75,e:120,text:'...','you have gone too far',bg:'#0a0a0f'},
-  {t:120,e:9999,text:'There is nothing left.','we are not sure what to say',bg:'#0a0a0f'}
+  {t:75,e:120,text:'...',sub:'you have gone too far',bg:'#0a0a0f'},
+  {t:120,e:9999,text:'There is nothing left.',sub:'we are not sure what to say',bg:'#0a0a0f'}
 ];
 
 const results=[
@@ -135,14 +134,14 @@ holdEl.addEventListener('touchstart',e=>{e.preventDefault()},{passive:false});
 
 function updateHold(){
   const elapsed=(Date.now()-holdStart)/1000;
-  
+
   // Find current phase
   let phaseIdx=-1;
   for(let i=0;i<phases.length;i++){
     if(elapsed>=phases[i].t&&elapsed<phases[i].e){phaseIdx=i;break}
   }
   if(phaseIdx===-1)phaseIdx=phases.length-1;
-  
+
   if(phaseIdx!==currentPhase){
     currentPhase=phaseIdx;
     const p=phases[phaseIdx];
@@ -158,12 +157,12 @@ function updateHold(){
     },200);
     document.getElementById('hold-bg').style.background=p.bg;
   }
-  
+
   // Progress ring
   const maxDisplay=120;
   const pct=Math.min(elapsed/maxDisplay,1);
   document.getElementById('pr').setAttribute('stroke-dashoffset',125.7*(1-pct));
-  
+
   if(holdStart)animFrame=requestAnimationFrame(updateHold);
 }
 
@@ -175,24 +174,24 @@ document.addEventListener('touchcancel',()=>{if(holdStart)endHold()});
 function showResult(seconds){
   const s=Math.round(seconds*10)/10;
   const result=results.find(r=>s>=r.min&&s<r.max)||results[results.length-1];
-  
+
   const el=document.getElementById('result');
   el.style.display='block';
-  
+
   document.getElementById('rt').textContent=s<10?s.toFixed(1):Math.round(s);
   document.getElementById('rt').style.color=result.color;
-  
+
   document.getElementById('rl').textContent=result.label;
   document.getElementById('rl').style.color=result.color;
-  
+
   document.getElementById('rd').textContent=result.desc;
-  
+
   // Stats
   const statsEl=document.getElementById('rs');
   statsEl.innerHTML=result.stats.map(st=>`
     <div class="stat"><div class="stat-val" style="color:${result.color}">${st.v}</div><div class="stat-lbl">${st.l}</div></div>
   `).join('');
-  
+
   // Animate in
   requestAnimationFrame(()=>{
     el.style.opacity='1';
@@ -211,5 +210,4 @@ document.getElementById('again-btn').addEventListener('click',()=>{
   },400);
 });
 </script>
-</body>
-</html>
+</body></html>
